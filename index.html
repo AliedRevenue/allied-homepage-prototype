@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
-  <link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&display=swap" rel="stylesheet" />
+  <link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&f[]=cabinet-grotesk@500,700,800&display=swap" rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -16,20 +16,20 @@
         extend: {
           fontFamily: {
             sans: ['General Sans', 'Inter', 'system-ui', 'sans-serif'],
-            display: ['General Sans', 'Inter', 'system-ui', 'sans-serif'],
+            display: ['Cabinet Grotesk', 'General Sans', 'Inter', 'system-ui', 'sans-serif'],
           },
           colors: {
             ink: {
-              50:  '#F8F8F8',
-              100: '#EFEFEF',
-              200: '#DADADA',
-              300: '#B8B8B8',
-              400: '#8A8A8A',
-              500: '#666666',
-              600: '#4A4A4A',
-              700: '#2E2E2E',
-              800: '#161A22',
-              900: '#080E13',
+              50:  '#F7F7F7',
+              100: '#EDEDED',
+              200: '#D6D6D6',
+              300: '#B0B0B0',
+              400: '#7A7A7A',
+              500: '#525252',
+              600: '#333333',
+              700: '#1F1F1F',
+              800: '#111111',
+              900: '#050507',
             },
             brand: {
               purple:  '#3B0CBF',
@@ -43,6 +43,7 @@
             'brand-gradient':   'linear-gradient(109deg, #3B0CBF 0%, #A30EA8 100%)',
             'brand-gradient-r': 'linear-gradient(97deg, #A30EA8 0%, #3B0CBF 100%)',
             'brand-deep':       'linear-gradient(99deg, #3B0CBF 0%, #700A63 100%)',
+            'brand-hot':        'linear-gradient(109deg, #3B0CBF 0%, #E013C6 100%)',
           }
         }
       }
@@ -51,178 +52,245 @@
   <style>
     html { scroll-behavior: smooth; }
     body { font-feature-settings: 'ss01', 'cv02', 'cv11'; }
-    .display { font-family: 'General Sans', 'Inter', system-ui, sans-serif; letter-spacing: -0.02em; }
-    .path-card {
-      transition: transform 250ms ease, box-shadow 250ms ease, border-color 250ms ease;
+    .display { font-family: 'Cabinet Grotesk', 'General Sans', 'Inter', system-ui, sans-serif; letter-spacing: -0.03em; }
+    .num { font-variant-numeric: tabular-nums; }
+
+    /* Animated gradient mesh in hero */
+    @keyframes float1 { 0%,100%{transform:translate3d(-8%,-6%,0) scale(1);} 50%{transform:translate3d(6%,8%,0) scale(1.15);} }
+    @keyframes float2 { 0%,100%{transform:translate3d(12%,10%,0) scale(1);} 50%{transform:translate3d(-6%,-8%,0) scale(0.9);} }
+    @keyframes float3 { 0%,100%{transform:translate3d(0,0,0) scale(1);} 50%{transform:translate3d(-10%,4%,0) scale(1.1);} }
+    .orb { position:absolute; border-radius:9999px; filter: blur(80px); opacity: 0.55; will-change: transform; }
+    .orb-1 { width:520px; height:520px; background:#3B0CBF; top:-100px; left:-100px; animation: float1 18s ease-in-out infinite; }
+    .orb-2 { width:600px; height:600px; background:#E013C6; top:-40px; right:-140px; animation: float2 22s ease-in-out infinite; opacity:0.45; }
+    .orb-3 { width:420px; height:420px; background:#A30EA8; bottom:-160px; left:35%; animation: float3 26s ease-in-out infinite; opacity:0.4; }
+    .noise {
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.4  0 0 0 0 0.3  0 0 0 0 0.6  0 0 0 0.35 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+      mix-blend-mode: overlay; opacity: .35;
     }
-    .path-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 24px 48px -12px rgba(59,12,191,0.12), 0 8px 16px -8px rgba(0,0,0,0.05);
+
+    /* Glass card */
+    .glass {
+      background: linear-gradient(180deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%);
+      backdrop-filter: blur(24px) saturate(180%);
+      -webkit-backdrop-filter: blur(24px) saturate(180%);
+      border: 1px solid rgba(255,255,255,0.10);
     }
-    .path-card:hover .path-arrow { transform: translateX(6px); }
-    .path-arrow { transition: transform 200ms ease; }
-    .logo-strip .logo-item { color: #666; transition: color 200ms ease; }
-    .logo-strip .logo-item:hover { color: #3B0CBF; }
+    .glass-hover-purple { transition: border-color 300ms, box-shadow 300ms, transform 300ms; }
+    .glass-hover-purple:hover { transform: translateY(-6px); border-color: rgba(59,12,191,0.5); box-shadow: 0 30px 60px -20px rgba(59,12,191,0.35), 0 0 0 1px rgba(59,12,191,0.25) inset; }
+    .glass-hover-magenta { transition: border-color 300ms, box-shadow 300ms, transform 300ms; }
+    .glass-hover-magenta:hover { transform: translateY(-6px); border-color: rgba(224,19,198,0.5); box-shadow: 0 30px 60px -20px rgba(224,19,198,0.35), 0 0 0 1px rgba(224,19,198,0.25) inset; }
+    .path-card:hover .path-arrow { transform: translateX(8px); }
+    .path-arrow { transition: transform 250ms cubic-bezier(.2,.9,.3,1); }
+
     .brand-text {
-      background: linear-gradient(109deg, #3B0CBF 0%, #A30EA8 100%);
-      -webkit-background-clip: text;
-      background-clip: text;
+      background: linear-gradient(109deg, #C5A4FF 0%, #FF8FE6 60%, #FFB56B 100%);
+      -webkit-background-clip: text; background-clip: text;
       -webkit-text-fill-color: transparent;
     }
-    .hero-glow {
-      background: radial-gradient(60% 60% at 15% 20%, rgba(59,12,191,0.08) 0%, rgba(59,12,191,0) 70%),
-                  radial-gradient(50% 50% at 90% 30%, rgba(224,19,198,0.06) 0%, rgba(224,19,198,0) 70%);
+    .brand-text-light {
+      background: linear-gradient(109deg, #3B0CBF 0%, #A30EA8 55%, #E013C6 100%);
+      -webkit-background-clip: text; background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
+
+    /* Scroll-reveal */
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 700ms ease, transform 700ms cubic-bezier(.2,.9,.3,1); }
+    .reveal.in { opacity: 1; transform: none; }
+
+    /* Grid pattern for section backgrounds */
+    .grid-bg {
+      background-image:
+        linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px);
+      background-size: 44px 44px;
+      mask-image: radial-gradient(60% 60% at 50% 20%, black, transparent);
+      -webkit-mask-image: radial-gradient(60% 60% at 50% 20%, black, transparent);
+    }
+
+    /* Number strip */
+    .stat-num { font-family: 'Cabinet Grotesk','General Sans',sans-serif; font-weight:800; letter-spacing:-0.04em; }
+
+    .logo-strip .logo-item { color:#7A7A7A; transition: color 250ms; }
+    .logo-strip .logo-item:hover { color:#3B0CBF; }
+
+    /* Magnetic-feeling CTA */
+    .btn-brand {
+      background-image: linear-gradient(109deg, #3B0CBF 0%, #A30EA8 55%, #E013C6 100%);
+      background-size: 200% 100%; background-position: 0% 0%;
+      transition: background-position 500ms ease, transform 200ms ease, box-shadow 300ms;
+      box-shadow: 0 10px 30px -10px rgba(59,12,191,0.55);
+    }
+    .btn-brand:hover { background-position: 100% 0%; transform: translateY(-1px); box-shadow: 0 18px 40px -14px rgba(224,19,198,0.55); }
+
+    /* Path card icon glow */
+    .icon-glow-purple { box-shadow: 0 0 0 1px rgba(59,12,191,.25), 0 12px 32px -12px rgba(59,12,191,.6) inset; }
+    .icon-glow-magenta { box-shadow: 0 0 0 1px rgba(224,19,198,.25), 0 12px 32px -12px rgba(224,19,198,.6) inset; }
   </style>
 </head>
-<body class="bg-white text-ink-800 font-sans antialiased">
+<body class="bg-ink-900 text-white font-sans antialiased selection:bg-brand-purple selection:text-white">
 
-  <!-- Nav -->
-  <nav class="sticky top-0 z-50 bg-white/85 backdrop-blur border-b border-ink-100">
+  <!-- Nav (dark) -->
+  <nav class="sticky top-0 z-50 bg-ink-900/70 backdrop-blur-xl border-b border-white/5">
     <div class="max-w-7xl mx-auto px-6 lg:px-10 h-16 flex items-center justify-between">
       <a href="#" class="flex items-center gap-2.5">
-        <div class="w-8 h-8 rounded-md bg-brand-gradient flex items-center justify-center">
+        <div class="w-8 h-8 rounded-md bg-brand-gradient flex items-center justify-center shadow-[0_0_20px_-4px_rgba(59,12,191,0.9)]">
           <span class="text-white font-bold text-sm">A</span>
         </div>
-        <span class="font-semibold text-ink-900 tracking-tight">Allied Revenue</span>
+        <span class="font-semibold text-white tracking-tight">Allied Revenue</span>
       </a>
-      <div class="hidden md:flex items-center gap-8 text-sm text-ink-600">
-        <a href="#diagnose" class="hover:text-brand-purple transition-colors">Diagnose</a>
-        <a href="#execute" class="hover:text-brand-magenta transition-colors">Execute</a>
-        <a href="#insights" class="hover:text-ink-900 transition-colors">Insights</a>
+      <div class="hidden md:flex items-center gap-8 text-sm text-white/70">
+        <a href="#diagnose" class="hover:text-white transition-colors">Diagnose</a>
+        <a href="#execute" class="hover:text-white transition-colors">Execute</a>
+        <a href="#insights" class="hover:text-white transition-colors">Insights</a>
       </div>
-      <a href="#book" class="inline-flex items-center gap-2 bg-brand-gradient hover:opacity-90 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-opacity">
+      <a href="#book" class="btn-brand inline-flex items-center gap-2 text-white text-sm font-semibold px-4 py-2 rounded-lg">
         Book intro
       </a>
     </div>
   </nav>
 
-  <!-- Hero — the fork -->
+  <!-- HERO: dark, animated gradient mesh -->
   <section class="relative overflow-hidden">
-    <div class="hero-glow absolute inset-0 pointer-events-none"></div>
-    <div class="relative max-w-7xl mx-auto px-6 lg:px-10 pt-20 pb-6 lg:pt-32">
+    <div class="absolute inset-0 pointer-events-none">
+      <div class="orb orb-1"></div>
+      <div class="orb orb-2"></div>
+      <div class="orb orb-3"></div>
+      <div class="absolute inset-0 noise pointer-events-none"></div>
+      <div class="absolute inset-0 grid-bg pointer-events-none"></div>
+      <div class="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-ink-900 pointer-events-none"></div>
+    </div>
+
+    <div class="relative max-w-7xl mx-auto px-6 lg:px-10 pt-24 pb-32 lg:pt-40 lg:pb-48">
       <div class="max-w-4xl">
-        <div class="inline-flex items-center gap-2 text-xs font-semibold text-brand-purple uppercase tracking-[0.18em] mb-6">
-          <span class="w-6 h-px bg-brand-purple"></span>
+        <div class="inline-flex items-center gap-2 text-[11px] font-semibold text-white/70 uppercase tracking-[0.22em] mb-8 glass rounded-full px-3 py-1.5">
+          <span class="w-1.5 h-1.5 rounded-full bg-brand-magenta animate-pulse"></span>
           Outsourced Revenue Operations
         </div>
-        <h1 class="display font-bold text-ink-900 text-5xl md:text-6xl lg:text-7xl leading-[1.05]">
-          What are you<br />trying to <span class="brand-text">do?</span>
+        <h1 class="display font-extrabold text-white text-6xl md:text-7xl lg:text-8xl leading-[0.95]">
+          What are you<br />trying to <span class="brand-text italic">do?</span>
         </h1>
-        <p class="mt-6 text-lg md:text-xl text-ink-600 max-w-2xl leading-relaxed">
+        <p class="mt-8 text-lg md:text-xl text-white/70 max-w-2xl leading-relaxed">
           Two ways to work with Allied Revenue. Senior operators who plug into your team — not consultants who leave a slide deck.
         </p>
+        <div class="mt-10 flex flex-wrap items-center gap-4">
+          <a href="#diagnose" class="btn-brand inline-flex items-center gap-2 text-white font-semibold px-6 py-3.5 rounded-xl">
+            Pick your path
+            <span>→</span>
+          </a>
+          <a href="#book" class="inline-flex items-center gap-2 text-white/85 hover:text-white font-medium px-2 py-3.5">
+            Or book a 30-min call
+          </a>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- The two-path fork -->
-  <section class="max-w-7xl mx-auto px-6 lg:px-10 pb-24">
-    <div class="grid md:grid-cols-2 gap-6 lg:gap-8 mt-10">
+  <!-- Two-path fork on dark bg -->
+  <section class="relative bg-ink-900 pb-32">
+    <div class="max-w-7xl mx-auto px-6 lg:px-10">
+      <div class="grid md:grid-cols-2 gap-6 lg:gap-8">
 
-      <!-- DIAGNOSE -->
-      <a id="diagnose" href="#" class="path-card group block bg-white border border-ink-100 hover:border-brand-purple/30 rounded-2xl p-8 lg:p-10 shadow-sm">
-        <div class="flex items-start justify-between mb-6">
-          <div class="w-12 h-12 rounded-xl bg-brand-purple/10 flex items-center justify-center">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-brand-purple">
-              <circle cx="11" cy="11" r="7" />
-              <line x1="21" y1="21" x2="16.65" y2="16.65" />
-              <line x1="11" y1="8" x2="11" y2="14" />
-              <line x1="8" y1="11" x2="14" y2="11" />
-            </svg>
+        <!-- DIAGNOSE -->
+        <a id="diagnose" href="#" class="path-card glass glass-hover-purple group block rounded-3xl p-8 lg:p-10 reveal">
+          <div class="flex items-start justify-between mb-8">
+            <div class="w-14 h-14 rounded-2xl bg-brand-purple/15 icon-glow-purple flex items-center justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="w-7 h-7 text-white">
+                <circle cx="11" cy="11" r="7" />
+                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                <line x1="11" y1="8" x2="11" y2="14" />
+                <line x1="8" y1="11" x2="14" y2="11" />
+              </svg>
+            </div>
+            <span class="text-[11px] font-semibold text-white/50 uppercase tracking-[0.22em]">Path 01 / Diagnose</span>
           </div>
-          <span class="text-xs font-semibold text-brand-purple/70 uppercase tracking-[0.18em]">Path 01</span>
-        </div>
-        <h2 class="display font-bold text-ink-900 text-3xl lg:text-4xl">Diagnose</h2>
-        <p class="mt-3 text-lg text-ink-700 font-medium">
-          Figure out what to build.
-        </p>
-        <p class="mt-4 text-ink-600 leading-relaxed">
-          You know something's off — pipeline, positioning, org design, the acquisition math. You want a partner who can actually get to the bottom of it, not sell you a workshop.
-        </p>
+          <h2 class="display font-extrabold text-white text-4xl lg:text-5xl">Figure out<br />what to build.</h2>
+          <p class="mt-5 text-white/70 leading-relaxed">
+            You know something's off — pipeline, positioning, org design, the acquisition math. You want a partner who can actually get to the bottom of it, not sell you a workshop.
+          </p>
 
-        <div class="mt-8 space-y-3 text-sm">
-          <div class="flex items-center gap-3 text-ink-700">
-            <span class="w-1.5 h-1.5 rounded-full bg-brand-purple"></span>
-            Growth Decision Roadmap
+          <div class="mt-10 grid grid-cols-2 gap-3 text-sm">
+            <div class="flex items-start gap-2.5 text-white/85"><span class="mt-1.5 w-1 h-1 rounded-full bg-brand-magenta shrink-0"></span>Growth Decision Roadmap</div>
+            <div class="flex items-start gap-2.5 text-white/85"><span class="mt-1.5 w-1 h-1 rounded-full bg-brand-magenta shrink-0"></span>M&amp;A prep &amp; investor thesis</div>
+            <div class="flex items-start gap-2.5 text-white/85"><span class="mt-1.5 w-1 h-1 rounded-full bg-brand-magenta shrink-0"></span>ICP &amp; market entry</div>
+            <div class="flex items-start gap-2.5 text-white/85"><span class="mt-1.5 w-1 h-1 rounded-full bg-brand-magenta shrink-0"></span>Revenue diagnostic &amp; churn</div>
           </div>
-          <div class="flex items-center gap-3 text-ink-700">
-            <span class="w-1.5 h-1.5 rounded-full bg-brand-purple"></span>
-            M&amp;A prep &amp; investor thesis
-          </div>
-          <div class="flex items-center gap-3 text-ink-700">
-            <span class="w-1.5 h-1.5 rounded-full bg-brand-purple"></span>
-            ICP refinement &amp; market entry
-          </div>
-          <div class="flex items-center gap-3 text-ink-700">
-            <span class="w-1.5 h-1.5 rounded-full bg-brand-purple"></span>
-            Revenue diagnostic &amp; churn root-cause
-          </div>
-        </div>
 
-        <div class="mt-10 flex items-center gap-2 text-brand-purple font-semibold">
-          Start with a diagnosis
-          <span class="path-arrow">→</span>
-        </div>
-      </a>
-
-      <!-- EXECUTE -->
-      <a id="execute" href="#" class="path-card group block bg-white border border-ink-100 hover:border-brand-magenta/30 rounded-2xl p-8 lg:p-10 shadow-sm">
-        <div class="flex items-start justify-between mb-6">
-          <div class="w-12 h-12 rounded-xl bg-brand-magenta/10 flex items-center justify-center">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-brand-magenta">
-              <polyline points="4 4 20 12 4 20 4 4" />
-            </svg>
+          <div class="mt-10 flex items-center gap-2 text-white font-semibold">
+            <span class="brand-text-light" style="background:linear-gradient(109deg,#C5A4FF 0%,#FF8FE6 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;">Start with a diagnosis</span>
+            <span class="path-arrow text-white">→</span>
           </div>
-          <span class="text-xs font-semibold text-brand-magenta/70 uppercase tracking-[0.18em]">Path 02</span>
-        </div>
-        <h2 class="display font-bold text-ink-900 text-3xl lg:text-4xl">Execute</h2>
-        <p class="mt-3 text-lg text-ink-700 font-medium">
-          Run the plan in your stack.
-        </p>
-        <p class="mt-4 text-ink-600 leading-relaxed">
-          You know what to build — you just don't have the team or the bandwidth to run it. We embed senior operators in your CRM, your outreach, and your reporting until it's humming.
-        </p>
+        </a>
 
-        <div class="mt-8 space-y-3 text-sm">
-          <div class="flex items-center gap-3 text-ink-700">
-            <span class="w-1.5 h-1.5 rounded-full bg-brand-magenta"></span>
-            Lead generation &amp; BDR pods
+        <!-- EXECUTE -->
+        <a id="execute" href="#" class="path-card glass glass-hover-magenta group block rounded-3xl p-8 lg:p-10 reveal" style="transition-delay:120ms">
+          <div class="flex items-start justify-between mb-8">
+            <div class="w-14 h-14 rounded-2xl bg-brand-magenta/15 icon-glow-magenta flex items-center justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="w-7 h-7 text-white">
+                <polyline points="4 4 20 12 4 20 4 4" />
+              </svg>
+            </div>
+            <span class="text-[11px] font-semibold text-white/50 uppercase tracking-[0.22em]">Path 02 / Execute</span>
           </div>
-          <div class="flex items-center gap-3 text-ink-700">
-            <span class="w-1.5 h-1.5 rounded-full bg-brand-magenta"></span>
-            HubSpot &amp; RevOps buildouts
-          </div>
-          <div class="flex items-center gap-3 text-ink-700">
-            <span class="w-1.5 h-1.5 rounded-full bg-brand-magenta"></span>
-            Outbound campaigns &amp; appointment setting
-          </div>
-          <div class="flex items-center gap-3 text-ink-700">
-            <span class="w-1.5 h-1.5 rounded-full bg-brand-magenta"></span>
-            AI automations &amp; data hygiene
-          </div>
-        </div>
+          <h2 class="display font-extrabold text-white text-4xl lg:text-5xl">Run the plan<br />in your stack.</h2>
+          <p class="mt-5 text-white/70 leading-relaxed">
+            You know what to build — you just don't have the team or the bandwidth to run it. We embed senior operators in your CRM, your outreach, and your reporting until it's humming.
+          </p>
 
-        <div class="mt-10 flex items-center gap-2 text-brand-magenta font-semibold">
-          Start with an execution plan
-          <span class="path-arrow">→</span>
-        </div>
-      </a>
+          <div class="mt-10 grid grid-cols-2 gap-3 text-sm">
+            <div class="flex items-start gap-2.5 text-white/85"><span class="mt-1.5 w-1 h-1 rounded-full bg-brand-magenta shrink-0"></span>Lead gen &amp; BDR pods</div>
+            <div class="flex items-start gap-2.5 text-white/85"><span class="mt-1.5 w-1 h-1 rounded-full bg-brand-magenta shrink-0"></span>HubSpot &amp; RevOps buildouts</div>
+            <div class="flex items-start gap-2.5 text-white/85"><span class="mt-1.5 w-1 h-1 rounded-full bg-brand-magenta shrink-0"></span>Outbound &amp; appointment setting</div>
+            <div class="flex items-start gap-2.5 text-white/85"><span class="mt-1.5 w-1 h-1 rounded-full bg-brand-magenta shrink-0"></span>AI automations &amp; data hygiene</div>
+          </div>
 
-    </div>
+          <div class="mt-10 flex items-center gap-2 text-white font-semibold">
+            <span style="background:linear-gradient(109deg,#FF8FE6 0%,#FFB56B 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;">Start with an execution plan</span>
+            <span class="path-arrow text-white">→</span>
+          </div>
+        </a>
 
-    <div class="mt-10 text-center text-ink-500 text-sm">
-      Not sure? <a href="#book" class="text-ink-900 font-medium underline underline-offset-4 decoration-brand-purple/40 hover:decoration-brand-purple">Book a 30-min call</a> and we'll help you pick the door.
+      </div>
+
+      <div class="mt-12 text-center text-white/50 text-sm">
+        Not sure? <a href="#book" class="text-white font-medium underline underline-offset-4 decoration-brand-magenta/60 hover:decoration-brand-magenta">Book a 30-min call</a> and we'll help you pick the door.
+      </div>
     </div>
   </section>
 
-  <!-- Client proof strip -->
-  <section class="border-t border-b border-ink-100 bg-ink-50">
-    <div class="max-w-7xl mx-auto px-6 lg:px-10 py-12">
-      <p class="text-center text-xs font-semibold text-ink-500 uppercase tracking-[0.18em] mb-8">
-        Trusted by operators at
+  <!-- Stat strip (dark → light transition) -->
+  <section class="relative bg-ink-900 pb-24">
+    <div class="max-w-7xl mx-auto px-6 lg:px-10">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-4 py-14 border-y border-white/10 reveal">
+        <div>
+          <div class="stat-num text-4xl md:text-5xl brand-text">50+</div>
+          <div class="mt-2 text-white/60 text-sm">Years combined ops experience</div>
+        </div>
+        <div>
+          <div class="stat-num text-4xl md:text-5xl brand-text">12×</div>
+          <div class="mt-2 text-white/60 text-sm">Best case pipeline lift in Y1</div>
+        </div>
+        <div>
+          <div class="stat-num text-4xl md:text-5xl brand-text">40+</div>
+          <div class="mt-2 text-white/60 text-sm">Portcos and founder-led shops served</div>
+        </div>
+        <div>
+          <div class="stat-num text-4xl md:text-5xl brand-text">0</div>
+          <div class="mt-2 text-white/60 text-sm">Slide-deck deliverables</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Transition to light -->
+  <div class="h-24 bg-gradient-to-b from-ink-900 to-white"></div>
+
+  <!-- Client proof strip (light) -->
+  <section class="bg-white">
+    <div class="max-w-7xl mx-auto px-6 lg:px-10 py-16">
+      <p class="text-center text-[11px] font-semibold text-ink-500 uppercase tracking-[0.22em] mb-10">
+        Senior operators trusted at
       </p>
-      <div class="logo-strip flex flex-wrap items-center justify-center gap-x-12 gap-y-6">
+      <div class="logo-strip flex flex-wrap items-center justify-center gap-x-14 gap-y-8">
         <div class="logo-item font-semibold text-xl tracking-tight">Spectra Precision</div>
         <div class="logo-item font-semibold text-xl tracking-tight">Cain Travel</div>
         <div class="logo-item font-bold text-xl uppercase tracking-wide">Steel Grip</div>
@@ -233,73 +301,90 @@
     </div>
   </section>
 
-  <!-- One-line pitch -->
-  <section class="max-w-4xl mx-auto px-6 lg:px-10 py-24 text-center">
-    <p class="display text-3xl md:text-4xl font-semibold text-ink-900 leading-snug">
-      Senior operators. In your stack. <span class="brand-text">Not a slide deck.</span>
-    </p>
-    <p class="mt-6 text-ink-600 max-w-2xl mx-auto">
-      Nearly 50 years of combined experience across ownership, PE, operations, and frontline sales. When we engage, we run — we don't hand you a deliverable and disappear.
-    </p>
+  <!-- One-line pitch (light) -->
+  <section class="bg-white">
+    <div class="max-w-5xl mx-auto px-6 lg:px-10 py-28 text-center reveal">
+      <p class="display text-4xl md:text-5xl lg:text-6xl font-extrabold text-ink-900 leading-[1.05]">
+        Senior operators. In your stack. <span class="brand-text-light">Not a slide deck.</span>
+      </p>
+      <p class="mt-8 text-lg text-ink-500 max-w-2xl mx-auto leading-relaxed">
+        Nearly 50 years of combined experience across ownership, PE, operations, and frontline sales. When we engage, we run — we don't hand you a deliverable and disappear.
+      </p>
+    </div>
   </section>
 
-  <!-- One anchor testimonial -->
-  <section class="bg-brand-deep text-white">
-    <div class="max-w-4xl mx-auto px-6 lg:px-10 py-24 text-center">
-      <p class="display text-2xl md:text-3xl leading-relaxed text-white/95">
-        &ldquo;In 12 years of operation, our first year with Allied was our best. We had more demos and conversations than we've ever had before.&rdquo;
+  <!-- Anchor testimonial on brand deep gradient -->
+  <section class="relative bg-brand-deep overflow-hidden">
+    <div class="absolute inset-0 pointer-events-none">
+      <div class="orb orb-2" style="width:400px;height:400px;top:auto;bottom:-100px;right:-100px;left:auto;opacity:.35;"></div>
+      <div class="absolute inset-0 noise pointer-events-none"></div>
+    </div>
+    <div class="relative max-w-4xl mx-auto px-6 lg:px-10 py-28 text-center">
+      <svg class="mx-auto w-10 h-10 text-white/60 mb-8" viewBox="0 0 24 24" fill="currentColor"><path d="M8 6C4.5 6 2 9 2 12.5 2 16 4.5 18 7 18c1 0 1.7-.3 2.3-.8-.4 2-1.7 3.6-3.8 4.3l.7 1.5c3.9-1.3 6-4.5 6-9C12.2 8.5 10.5 6 8 6zm10 0c-3.5 0-6 3-6 6.5 0 3.5 2.5 5.5 5 5.5 1 0 1.7-.3 2.3-.8-.4 2-1.7 3.6-3.8 4.3l.7 1.5c3.9-1.3 6-4.5 6-9C22.2 8.5 20.5 6 18 6z"/></svg>
+      <p class="display text-3xl md:text-4xl leading-snug text-white font-semibold">
+        In 12 years of operation, our first year with Allied was our best. We had more demos and conversations than we've ever had before.
       </p>
-      <p class="mt-8 text-sm text-white/70 uppercase tracking-[0.18em]">
+      <p class="mt-10 text-sm text-white/70 uppercase tracking-[0.22em]">
         Adam C. &nbsp;·&nbsp; EVP
       </p>
     </div>
   </section>
 
-  <!-- Insights -->
-  <section id="insights" class="max-w-7xl mx-auto px-6 lg:px-10 py-24">
-    <div class="flex items-end justify-between mb-10">
-      <div>
-        <div class="text-xs font-semibold text-brand-purple uppercase tracking-[0.18em] mb-3">Insights</div>
-        <h3 class="display text-3xl md:text-4xl font-bold text-ink-900">Recent reads.</h3>
+  <!-- Insights (light) -->
+  <section id="insights" class="bg-white">
+    <div class="max-w-7xl mx-auto px-6 lg:px-10 py-28">
+      <div class="flex items-end justify-between mb-12 reveal">
+        <div>
+          <div class="text-[11px] font-semibold text-brand-purple uppercase tracking-[0.22em] mb-3">Insights</div>
+          <h3 class="display text-4xl md:text-5xl font-extrabold text-ink-900 tracking-tight">Recent reads.</h3>
+        </div>
+        <a href="#" class="text-sm text-ink-600 hover:text-brand-purple font-semibold">All posts →</a>
       </div>
-      <a href="#" class="text-sm text-ink-600 hover:text-brand-purple font-semibold">All posts →</a>
-    </div>
-    <div class="grid md:grid-cols-3 gap-6">
-      <a href="#" class="group block bg-white border border-ink-100 hover:border-brand-purple/30 rounded-xl p-6 hover:shadow-sm transition-all">
-        <div class="text-xs text-ink-400 mb-3">Apr 16, 2025 · 6 min read</div>
-        <h4 class="display text-xl font-semibold text-ink-900 mb-2 group-hover:text-brand-purple transition-colors">A Simple Guide to Account-Based Marketing</h4>
-        <p class="text-sm text-ink-600 leading-relaxed">When ABM works, when it doesn't, and what to run before you invest a dollar in tooling.</p>
-      </a>
-      <a href="#" class="group block bg-white border border-ink-100 hover:border-brand-purple/30 rounded-xl p-6 hover:shadow-sm transition-all">
-        <div class="text-xs text-ink-400 mb-3">Apr 18, 2024 · 4 min read</div>
-        <h4 class="display text-xl font-semibold text-ink-900 mb-2 group-hover:text-brand-purple transition-colors">Boost Your Sales Team: Outsource Lead Generation</h4>
-        <p class="text-sm text-ink-600 leading-relaxed">Why hiring your first BDR is often the wrong move, and what to do instead.</p>
-      </a>
-      <a href="#" class="group block bg-white border border-ink-100 hover:border-brand-purple/30 rounded-xl p-6 hover:shadow-sm transition-all">
-        <div class="text-xs text-ink-400 mb-3">Mar 18, 2024 · 5 min read</div>
-        <h4 class="display text-xl font-semibold text-ink-900 mb-2 group-hover:text-brand-purple transition-colors">How To Use Sales Analytics To Assess a Campaign</h4>
-        <p class="text-sm text-ink-600 leading-relaxed">A rep-by-rep, cohort-by-cohort read on whether your campaign is actually working.</p>
-      </a>
+      <div class="grid md:grid-cols-3 gap-6">
+        <a href="#" class="group block bg-ink-50 hover:bg-white border border-ink-100 hover:border-brand-purple/30 rounded-2xl p-7 transition-all hover:shadow-[0_20px_50px_-20px_rgba(59,12,191,0.25)] reveal">
+          <div class="text-xs text-ink-400 mb-4">Apr 16, 2025 · 6 min read</div>
+          <h4 class="display text-2xl font-bold text-ink-900 mb-3 group-hover:text-brand-purple transition-colors">A Simple Guide to Account-Based Marketing</h4>
+          <p class="text-sm text-ink-500 leading-relaxed">When ABM works, when it doesn't, and what to run before you invest a dollar in tooling.</p>
+        </a>
+        <a href="#" class="group block bg-ink-50 hover:bg-white border border-ink-100 hover:border-brand-purple/30 rounded-2xl p-7 transition-all hover:shadow-[0_20px_50px_-20px_rgba(59,12,191,0.25)] reveal" style="transition-delay:80ms">
+          <div class="text-xs text-ink-400 mb-4">Apr 18, 2024 · 4 min read</div>
+          <h4 class="display text-2xl font-bold text-ink-900 mb-3 group-hover:text-brand-purple transition-colors">Boost Your Sales Team: Outsource Lead Generation</h4>
+          <p class="text-sm text-ink-500 leading-relaxed">Why hiring your first BDR is often the wrong move, and what to do instead.</p>
+        </a>
+        <a href="#" class="group block bg-ink-50 hover:bg-white border border-ink-100 hover:border-brand-purple/30 rounded-2xl p-7 transition-all hover:shadow-[0_20px_50px_-20px_rgba(59,12,191,0.25)] reveal" style="transition-delay:160ms">
+          <div class="text-xs text-ink-400 mb-4">Mar 18, 2024 · 5 min read</div>
+          <h4 class="display text-2xl font-bold text-ink-900 mb-3 group-hover:text-brand-purple transition-colors">How To Use Sales Analytics To Assess a Campaign</h4>
+          <p class="text-sm text-ink-500 leading-relaxed">A rep-by-rep, cohort-by-cohort read on whether your campaign is actually working.</p>
+        </a>
+      </div>
     </div>
   </section>
 
-  <!-- Final CTA -->
-  <section id="book" class="max-w-4xl mx-auto px-6 lg:px-10 pb-32 text-center">
-    <h3 class="display text-4xl md:text-5xl font-bold text-ink-900">
-      Still not sure <span class="brand-text">which door?</span>
-    </h3>
-    <p class="mt-6 text-lg text-ink-600 max-w-2xl mx-auto">
-      Book a 30-minute call. We'll ask a few questions and tell you whether you're a Diagnose or an Execute — even if the answer is "neither, right now."
-    </p>
-    <a href="#" class="inline-flex items-center gap-2 mt-10 bg-brand-gradient hover:opacity-90 text-white font-semibold px-6 py-3 rounded-lg transition-opacity">
-      Book a 30-min call
-      <span>→</span>
-    </a>
+  <!-- Final CTA (dark reprise) -->
+  <section id="book" class="relative bg-ink-900 overflow-hidden">
+    <div class="absolute inset-0 pointer-events-none">
+      <div class="orb orb-1" style="left:20%;top:auto;bottom:-200px;width:600px;height:600px;opacity:.5;"></div>
+      <div class="orb orb-2" style="right:-100px;top:-100px;width:500px;height:500px;opacity:.35;"></div>
+      <div class="absolute inset-0 noise pointer-events-none"></div>
+      <div class="absolute inset-0 grid-bg pointer-events-none"></div>
+    </div>
+    <div class="relative max-w-4xl mx-auto px-6 lg:px-10 py-32 text-center reveal">
+      <h3 class="display text-5xl md:text-6xl lg:text-7xl font-extrabold text-white leading-[1.02]">
+        Still not sure <span class="brand-text italic">which door?</span>
+      </h3>
+      <p class="mt-8 text-lg md:text-xl text-white/70 max-w-2xl mx-auto leading-relaxed">
+        Book a 30-minute call. We'll ask a few questions and tell you whether you're a Diagnose or an Execute — even if the answer is "neither, right now."
+      </p>
+      <a href="#" class="btn-brand inline-flex items-center gap-2 mt-12 text-white font-semibold px-7 py-4 rounded-xl text-lg">
+        Book a 30-min call
+        <span>→</span>
+      </a>
+    </div>
   </section>
 
   <!-- Footer -->
-  <footer class="border-t border-ink-100 bg-ink-50">
-    <div class="max-w-7xl mx-auto px-6 lg:px-10 py-12 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 text-sm text-ink-500">
+  <footer class="bg-ink-900 border-t border-white/5">
+    <div class="max-w-7xl mx-auto px-6 lg:px-10 py-12 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 text-sm text-white/50">
       <div class="flex items-center gap-2">
         <div class="w-6 h-6 rounded bg-brand-gradient flex items-center justify-center">
           <span class="text-white font-bold text-xs">A</span>
@@ -307,12 +392,20 @@
         <span>&copy; 2026 Allied Revenue</span>
       </div>
       <div class="flex flex-wrap gap-6">
-        <a href="#" class="hover:text-brand-purple">Terms &amp; Conditions</a>
-        <a href="#" class="hover:text-brand-purple">Privacy Policy</a>
-        <a href="#" class="hover:text-brand-purple">LinkedIn</a>
+        <a href="#" class="hover:text-white transition-colors">Terms &amp; Conditions</a>
+        <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
+        <a href="#" class="hover:text-white transition-colors">LinkedIn</a>
       </div>
     </div>
   </footer>
+
+  <script>
+    // Scroll-reveal
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, { threshold: 0.12, rootMargin: '0px 0px -80px 0px' });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  </script>
 
 </body>
 </html>
